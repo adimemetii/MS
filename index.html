@@ -2114,33 +2114,51 @@
                 background-color: var(--nav-bg);
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
-                padding-top: 2rem;
+                justify-content: flex-start;
+                padding: 5rem 1rem 2rem;
                 transition: all 0.5s ease;
                 z-index: 999;
-                gap: 2rem;
+                gap: 0.75rem;
                 backdrop-filter: blur(10px);
                 box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
-            
+
             nav ul.active {
                 left: 0;
             }
-            
+
+            nav ul li {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
             nav a {
-                padding: 1.2rem 1.5rem;
-                width: 85%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 48px;
+                padding: 0.9rem 1.5rem;
+                width: 100%;
                 text-align: center;
-                margin: 0.3rem 0;
-                font-size: 1.2rem;
+                margin: 0;
+                font-size: 1.05rem;
+                line-height: 1.2;
                 background-color: rgba(255, 255, 255, 0.1);
                 border-radius: 8px;
                 transition: all 0.3s ease;
+                box-sizing: border-box;
             }
-            
-            nav a:hover {
+
+            nav a:hover, nav a:focus {
                 background-color: rgba(184, 168, 150, 0.2);
                 transform: translateX(5px);
+            }
+
+            nav a:active {
+                background-color: rgba(184, 168, 150, 0.35);
             }
             
             .menu-toggle {
@@ -3848,7 +3866,7 @@
                     <!-- Bottom Buttons Container -->
                     <div class="bottom-buttons-container">
                         <!-- Language Toggle Button -->
-                        <button class="language-toggle" id="languageToggle">
+                        <button class="language-toggle" id="languageToggle" aria-label="Change language" title="Albanian / English / French / German">
                             🇦🇱
                         </button>
                     
@@ -3941,6 +3959,11 @@
                                     successTitle: 'Merci pour votre message!',
                                     successText: 'Notre équipe vous contactera bientôt. Ouverture de WhatsApp pour envoyer le message.',
                                     error: 'Une erreur s\'est produite. Veuillez réessayer plus tard.'
+                                },
+                                de: {
+                                    successTitle: 'Vielen Dank für Ihre Nachricht!',
+                                    successText: 'Unser Team wird Sie bald kontaktieren. WhatsApp wird geöffnet, um die Nachricht zu senden.',
+                                    error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.'
                                 }
                             };
 
@@ -4276,13 +4299,18 @@
                 if (currentLanguage === 'sq') {
                     // Switch to English
                     currentLanguage = 'en';
-                    languageToggle.textContent = '🇺🇸';
+                    languageToggle.textContent = '🇬🇧';
                     translateToEnglish();
                 } else if (currentLanguage === 'en') {
                     // Switch to French
                     currentLanguage = 'fr';
                     languageToggle.textContent = '🇫🇷';
                     translateToFrench();
+                } else if (currentLanguage === 'fr') {
+                    // Switch to German
+                    currentLanguage = 'de';
+                    languageToggle.textContent = '🇩🇪';
+                    translateToGerman();
                 } else {
                     // Switch to Albanian
                     currentLanguage = 'sq';
@@ -4346,6 +4374,32 @@
                             if (featuresTitle) featuresTitle.textContent = 'Caractéristiques';
                             const orderTitle = doorModal.querySelector('.door-order h3');
                             if (orderTitle) orderTitle.textContent = 'Passer la Commande';
+                        } else if (currentLanguage === 'de') {
+                            // Update modal to German
+                            const orderFormLabels = document.querySelectorAll('.door-order-form label');
+                            const germanOrderLabels = ['Ihr Name *', 'E-Mail *', 'Telefon *', 'Adresse', 'Zusätzliche Hinweise'];
+                            const germanOrderPlaceholder = 'Beschreiben Sie Ihre spezifischen Anforderungen...';
+                            const germanOrderButton = 'Bestellung absenden';
+                            orderFormLabels.forEach((label, index) => {
+                                if (index < germanOrderLabels.length) {
+                                    label.textContent = germanOrderLabels[index];
+                                }
+                            });
+                            const orderTextarea = document.querySelector('.door-order-form textarea[placeholder]');
+                            if (orderTextarea) {
+                                orderTextarea.placeholder = germanOrderPlaceholder;
+                            }
+                            const orderButton = document.querySelector('.door-order-btn');
+                            if (orderButton) {
+                                orderButton.textContent = germanOrderButton;
+                            }
+                            // Modal section titles
+                            const descTitle = doorModal.querySelector('.door-description h3');
+                            if (descTitle) descTitle.textContent = 'Beschreibung';
+                            const featuresTitle = doorModal.querySelector('.door-features h3');
+                            if (featuresTitle) featuresTitle.textContent = 'Eigenschaften';
+                            const orderTitle = doorModal.querySelector('.door-order h3');
+                            if (orderTitle) orderTitle.textContent = 'Bestellung aufgeben';
                         } else {
                             // Update modal to Albanian
                             const orderFormLabels = document.querySelectorAll('.door-order-form label');
@@ -5113,6 +5167,230 @@
                                 }
                             }
                         }
+
+                        function translateToGerman() {
+                            // Navigation
+                            document.querySelector('a[href="#home"]').textContent = 'Startseite';
+                            document.querySelector('a[href="#services"]').textContent = 'Dienstleistungen';
+                            document.querySelector('a[href="#catalog"]').textContent = 'Katalog';
+                            document.querySelector('a[href="#video"]').textContent = 'Ausstellung';
+                            document.querySelector('a[href="#gallery"]').textContent = 'Projekte';
+                            document.querySelector('a[href="#developments"]').textContent = 'Entwicklungen';
+                            document.querySelector('a[href="#contact"]').textContent = 'Kontakt';
+
+                            // Hero section
+                            document.querySelector('.hero h1').textContent = 'MS DOORS & WINDOWS';
+                            document.querySelector('.hero p').textContent = 'Premium-Lösungen für maßgefertigte Türen und Fenster, mit Meisterschaft gefertigt für Ihre Traumhäuser';
+                            document.querySelector('.hero .btn').textContent = 'Kollektionen entdecken';
+
+                            // Services section
+                            document.querySelector('.services .section-title').textContent = 'UNSERE DIENSTLEISTUNGEN';
+                            document.querySelectorAll('.service-title')[0].textContent = 'Maßgefertigte Türen';
+                            document.querySelectorAll('.service-title')[1].textContent = 'Fenstersysteme';
+                            document.querySelectorAll('.service-title')[2].textContent = 'Professionelle Installation';
+
+                            // Service descriptions
+                            document.querySelectorAll('.service-desc')[0].textContent = 'Einzigartige Designs, die nach Ihren spezifischen Bedürfnissen und Stilvorlieben erstellt werden';
+                            document.querySelectorAll('.service-desc')[1].textContent = 'Fortschrittliche Fensterlösungen mit hoher Energieeffizienz';
+                            document.querySelectorAll('.service-desc')[2].textContent = 'Perfekte Installation durch unsere Techniker mit jahrelanger Erfahrung';
+
+                            // Catalog section
+                            document.querySelector('.catalog .section-title').textContent = 'UNSERE EXKLUSIVEN KOLLEKTIONEN';
+                            const showMoreCatalog = document.getElementById('showMoreCatalog');
+                            if (showMoreCatalog) showMoreCatalog.textContent = 'Mehr anzeigen';
+
+                            // Catalog items
+                            const catalogTitles = document.querySelectorAll('.catalog-info h3');
+                            const catalogDescriptions = document.querySelectorAll('.catalog-info p');
+                            const catalogOrderButtons = document.querySelectorAll('.catalog-order-btn');
+
+                            const germanTitles = [
+                                'Aurora',
+                                'Elegance',
+                                'Privata',
+                                'Polaris',
+                                'Verticalis',
+                                'Architectura',
+                                'Crystal',
+                                'Minimalis'
+                            ];
+
+                            const germanDescriptions = [
+                                'Moderne Türen aus Aluminium/Metall mit Seitenfenstern (Sidelight)',
+                                'Elegante Türen mit voller Tafel und horizontalem Inox-Dekor für einen raffinierten Look',
+                                'Türen mit Sichtstreifen, die Privatsphäre bieten und gleichzeitig Tageslicht erhalten',
+                                'Türen mit Polardesign, die Eleganz und Funktionalität vereinen',
+                                'Türen mit vertikalen Linien, die Ihrem Raum Höhe und Eleganz verleihen',
+                                'Gewölbte Türen, die Ihrem Zuhause eine einzigartige architektonische Note verleihen',
+                                'Türen mit Kristallansicht, die im Licht glänzen und Ihrem Raum Glanz verleihen',
+                                'Türen mit schlichtem und elegantem Look, perfekt für den minimalistischen Stil'
+                            ];
+
+                            catalogTitles.forEach((title, index) => {
+                                if (index < germanTitles.length) {
+                                    title.textContent = germanTitles[index];
+                                }
+                            });
+
+                            catalogDescriptions.forEach((desc, index) => {
+                                if (index < germanDescriptions.length) {
+                                    desc.textContent = germanDescriptions[index];
+                                }
+                            });
+
+                            // Update order button text
+                            catalogOrderButtons.forEach(button => {
+                                button.textContent = 'Bestellung aufgeben';
+                            });
+
+                            // Also update any hidden buttons that might not be selected
+                            const allCatalogButtons = document.querySelectorAll('.catalog-order-btn');
+                            allCatalogButtons.forEach(button => {
+                                button.textContent = 'Bestellung aufgeben';
+                            });
+
+                            // Video section
+                            document.querySelector('.video-section .section-title').textContent = 'HANDWERKLICHE MEISTERSCHAFT';
+                            document.querySelector('.video-section p').textContent = 'Beobachten Sie den detaillierten Prozess hinter unseren Premium-Architekturelementen';
+
+                            // Gallery section
+                            document.querySelector('.gallery .section-title').textContent = 'UNSERE PROJEKTE';
+                            const showMoreGallery = document.getElementById('showMoreGallery');
+                            if (showMoreGallery) showMoreGallery.textContent = 'Mehr anzeigen';
+
+                            // Partners section
+                            const partnersSection = document.querySelector('#partners');
+                            if (partnersSection) {
+                                partnersSection.querySelector('.section-title').textContent = 'UNSERE PARTNER';
+                            }
+
+                            // Gallery captions
+                            const galleryCaptions = document.querySelectorAll('.gallery-caption');
+                            const germanCaptions = [
+                                'Projekt 1 - (Abgeschlossenes Projekt in Rothrist-Schweiz)',
+                                'Projekt 2',
+                                'Projekt 3',
+                                'Projekt 4',
+                                'Projekt 5',
+                                'Projekt 6',
+                                'Projekt 7',
+                                'Projekt 8',
+                                'Projekt 9',
+                                'Projekt 10',
+                                'Projekt 11',
+                                'Projekt 12'
+                            ];
+
+                            galleryCaptions.forEach((caption, index) => {
+                                if (index < germanCaptions.length) {
+                                    caption.textContent = germanCaptions[index];
+                                }
+                            });
+
+                            // Developments section
+                            document.querySelector('.developments .section-title').textContent = 'UNSERE ENTWICKLUNGEN';
+                            document.querySelector('.developments p').textContent = 'Wachstum und Expansion unseres Unternehmens durch Import-Export und neue Entwicklungen';
+
+                            // Development items
+                            const developmentTitles = document.querySelectorAll('.development-item h3');
+                            const developmentDescriptions = document.querySelectorAll('.development-item p');
+
+                            const germanDevTitles = [
+                                'Abgeschlossene Projekte',
+                                'Exportländer',
+                                'Neue Fabrik',
+                                'Mitarbeiter',
+                                'Exporte',
+                                'Exporte'
+                            ];
+
+                            const germanDevDescriptions = [
+                                'Erfolgreiche Projekte im Kosovo',
+                                'Export in 25 verschiedene Länder weltweit',
+                                'Fabrik für erweiterte Produktion gebaut',
+                                'Erweitertes Team mit qualifizierten Spezialisten',
+                                'Über 100.000 Exporte weltweit',
+                                'Über 100.000 Exporte weltweit'
+                            ];
+
+                            developmentTitles.forEach((title, index) => {
+                                if (index < germanDevTitles.length) {
+                                    title.textContent = germanDevTitles[index];
+                                }
+                            });
+
+                            developmentDescriptions.forEach((desc, index) => {
+                                if (index < germanDevDescriptions.length) {
+                                    desc.textContent = germanDevDescriptions[index];
+                                }
+                            });
+
+                            // Contact section
+                            document.querySelector('.contact .section-title').textContent = 'BERATEN SIE SICH MIT UNSEREN EXPERTEN';
+                            document.querySelector('.contact-info h3').textContent = 'Beginnen Sie Ihre architektonische Reise';
+                            document.querySelector('.contact-info p').textContent = 'Unser Team von Spezialisten ist bereit, Sie durch den Prozess der Auswahl der perfekten Türen und Fenster für Ihr Projekt zu führen. Egal, ob Sie neu bauen oder renovieren, wir bieten maßgeschneiderte Lösungen, die Ihren genauen Anforderungen entsprechen.';
+                            document.querySelector('.submit-btn').textContent = 'Beratung anfordern';
+
+                            // Contact details
+                            const contactDetails = document.querySelectorAll('.contact-detail p');
+                            if (contactDetails.length >= 3) {
+                                contactDetails[0].innerHTML = '<strong>Adresse:</strong> Skifteraj, 61000, Kosovo';
+                                contactDetails[1].innerHTML = '<strong>Telefon:</strong> +377 44 877 682';
+                                contactDetails[2].innerHTML = '<strong>E-Mail:</strong> halitisebastian1@gmail.com';
+                            }
+
+                            // Contact form labels
+                            document.querySelector('label[for="name"]').textContent = 'Ihr Name';
+                            document.querySelector('label[for="email"]').textContent = 'E-Mail-Adresse';
+                            document.querySelector('label[for="phone"]').textContent = 'Telefonnummer';
+                            document.querySelector('label[for="message"]').textContent = 'Projektdetails';
+
+                            // Footer links
+                            const footerLinks = document.querySelectorAll('.footer-links a');
+                            const germanFooterLinks = [
+                                'Startseite', 'Dienstleistungen', 'Katalog', 'Ausstellung', 'Projekte',
+                                'Entwicklungen', 'Kontakt', 'Datenschutzerklärung', 'Nutzungsbedingungen'
+                            ];
+
+                            footerLinks.forEach((link, index) => {
+                                if (index < germanFooterLinks.length) {
+                                    link.textContent = germanFooterLinks[index];
+                                }
+                            });
+
+                            // Copyright + "Created by" credit
+                            const copyrightTextEl = document.getElementById('copyrightText');
+                            const webmakersCreditTextEl = document.getElementById('webmakersCreditText');
+                            if (copyrightTextEl) copyrightTextEl.textContent = 'Alle Rechte vorbehalten.';
+                            if (webmakersCreditTextEl) webmakersCreditTextEl.textContent = 'Erstellt von';
+
+                            // Translate door modal if open
+                            const doorModal = document.querySelector('.door-modal');
+                            if (doorModal) {
+                                const orderFormLabels = document.querySelectorAll('.door-order-form label');
+                                const germanOrderLabels = ['Ihr Name *', 'E-Mail *', 'Telefon *', 'Adresse', 'Zusätzliche Hinweise'];
+                                const germanOrderPlaceholder = 'Beschreiben Sie Ihre spezifischen Anforderungen...';
+                                const germanOrderButton = 'Bestellung absenden';
+
+                                if (orderFormLabels.length > 0) {
+                                    orderFormLabels.forEach((label, index) => {
+                                        if (index < germanOrderLabels.length) {
+                                            label.textContent = germanOrderLabels[index];
+                                        }
+                                    });
+
+                                    const orderTextarea = document.querySelector('.door-order-form textarea[placeholder]');
+                                    if (orderTextarea) {
+                                        orderTextarea.placeholder = germanOrderPlaceholder;
+                                    }
+
+                                    const orderButton = document.querySelector('.door-order-btn');
+                                    if (orderButton) {
+                                        orderButton.textContent = germanOrderButton;
+                                    }
+                                }
+                            }
+                        }
                 
                         // Theme toggle functionality
                         const themeToggle = document.getElementById('themeToggle');
@@ -5185,12 +5463,12 @@
                             
                             if (catalogGrid.classList.contains('show-all')) {
                                 catalogGrid.classList.remove('show-all');
-                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Shumë' : currentLanguage === 'fr' ? 'Afficher Plus' : 'Show More';
+                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Shumë' : currentLanguage === 'fr' ? 'Afficher Plus' : currentLanguage === 'de' ? 'Mehr anzeigen' : 'Show More';
                                 // Smooth scroll to top of catalog section
                                 document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
                             } else {
                                 catalogGrid.classList.add('show-all');
-                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Pak' : currentLanguage === 'fr' ? 'Afficher Moins' : 'Show Less';
+                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Pak' : currentLanguage === 'fr' ? 'Afficher Moins' : currentLanguage === 'de' ? 'Weniger anzeigen' : 'Show Less';
                                 // Smooth scroll to show the new items
                                 setTimeout(() => {
                                     const firstHiddenItem = catalogGrid.querySelector('.catalog-item:nth-child(3)');
@@ -5208,12 +5486,12 @@
                             
                             if (galleryGrid.classList.contains('show-all')) {
                                 galleryGrid.classList.remove('show-all');
-                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Shumë' : currentLanguage === 'fr' ? 'Afficher Plus' : 'Show More';
+                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Shumë' : currentLanguage === 'fr' ? 'Afficher Plus' : currentLanguage === 'de' ? 'Mehr anzeigen' : 'Show More';
                                 // Smooth scroll to top of gallery section
                                 document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
                             } else {
                                 galleryGrid.classList.add('show-all');
-                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Pak' : currentLanguage === 'fr' ? 'Afficher Moins' : 'Show Less';
+                                button.textContent = currentLanguage === 'sq' ? 'Shfaq Më Pak' : currentLanguage === 'fr' ? 'Afficher Moins' : currentLanguage === 'de' ? 'Weniger anzeigen' : 'Show Less';
                                 // Smooth scroll to show the new items
                                 setTimeout(() => {
                                     const firstHiddenItem = galleryGrid.querySelector('.gallery-item:nth-child(7)');
@@ -5551,7 +5829,10 @@
                 
                             const door = doorData[doorId];
                             if (!door) return;
-                
+
+                            // Pick the best available language for door data; fall back to English, then Albanian.
+                            const doorLang = (door.description && door.description[currentLanguage]) ? currentLanguage : (door.description && door.description.en) ? 'en' : 'sq';
+
                             // Create modal content
                             const modalContent = `
                                 <div class="door-modal" id="doorModal">
@@ -5566,41 +5847,41 @@
                                             </div>
                                             <div class="door-modal-info">
                                                 <div class="door-description">
-                                                    <h3>${currentLanguage === 'en' ? 'Description' : currentLanguage === 'fr' ? 'Description' : 'Përshkrimi'}</h3>
-                                                    <p>${door.description[currentLanguage]}</p>
-                                                    <p style="font-style: italic; color: rgb(104, 104, 104); margin-top: 1rem;">${door.motivation[currentLanguage]}</p>
+                                                    <h3>${currentLanguage === 'en' ? 'Description' : currentLanguage === 'fr' ? 'Description' : currentLanguage === 'de' ? 'Beschreibung' : 'Përshkrimi'}</h3>
+                                                    <p>${door.description[doorLang]}</p>
+                                                    <p style="font-style: italic; color: rgb(104, 104, 104); margin-top: 1rem;">${door.motivation[doorLang]}</p>
                                                 </div>
                                                 <div class="door-features">
-                                                    <h3>${currentLanguage === 'en' ? 'Features' : currentLanguage === 'fr' ? 'Caractéristiques' : 'Karakteristikat'}</h3>
+                                                    <h3>${currentLanguage === 'en' ? 'Features' : currentLanguage === 'fr' ? 'Caractéristiques' : currentLanguage === 'de' ? 'Eigenschaften' : 'Karakteristikat'}</h3>
                                                     <ul>
-                                                        ${door.features[currentLanguage].map(feature => `<li>${feature}</li>`).join('')}
+                                                        ${door.features[doorLang].map(feature => `<li>${feature}</li>`).join('')}
                                                     </ul>
                                                 </div>
                                                 <div class="door-order">
-                                                    <h3>${currentLanguage === 'en' ? 'Place Order' : currentLanguage === 'fr' ? 'Passer la Commande' : 'Bëj Porosinë'}</h3>
+                                                    <h3>${currentLanguage === 'en' ? 'Place Order' : currentLanguage === 'fr' ? 'Passer la Commande' : currentLanguage === 'de' ? 'Bestellung aufgeben' : 'Bëj Porosinë'}</h3>
                                                     <form action="https://formspree.io/f/xpwlnaqw" method="POST" class="door-order-form">
                                                         <input type="hidden" name="Lloji i derës" value="${door.title}">
                                                         <div class="form-group">
-                                                            <label for="customer_name">${currentLanguage === 'en' ? 'Your Name *' : currentLanguage === 'fr' ? 'Votre Nom *' : 'Emri Juaj *'}</label>
+                                                            <label for="customer_name">${currentLanguage === 'en' ? 'Your Name *' : currentLanguage === 'fr' ? 'Votre Nom *' : currentLanguage === 'de' ? 'Ihr Name *' : 'Emri Juaj *'}</label>
                                                             <input type="text" id="customer_name" name="Emri" required>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="customer_email">${currentLanguage === 'en' ? 'Email *' : currentLanguage === 'fr' ? 'Email *' : 'Email *'}</label>
+                                                            <label for="customer_email">${currentLanguage === 'en' ? 'Email *' : currentLanguage === 'fr' ? 'Email *' : currentLanguage === 'de' ? 'E-Mail *' : 'Email *'}</label>
                                                             <input type="email" id="customer_email" name="Email" required>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="customer_phone">${currentLanguage === 'en' ? 'Phone *' : currentLanguage === 'fr' ? 'Téléphone *' : 'Telefoni *'}</label>
+                                                            <label for="customer_phone">${currentLanguage === 'en' ? 'Phone *' : currentLanguage === 'fr' ? 'Téléphone *' : currentLanguage === 'de' ? 'Telefon *' : 'Telefoni *'}</label>
                                                             <input type="tel" id="customer_phone" name="Numri i telefonit" required>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="customer_address">${currentLanguage === 'en' ? 'Address' : currentLanguage === 'fr' ? 'Adresse' : 'Adresa'}</label>
+                                                            <label for="customer_address">${currentLanguage === 'en' ? 'Address' : currentLanguage === 'fr' ? 'Adresse' : currentLanguage === 'de' ? 'Adresse' : 'Adresa'}</label>
                                                             <textarea id="customer_address" name="Adresa" rows="2"></textarea>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="order_notes">${currentLanguage === 'en' ? 'Additional Notes' : currentLanguage === 'fr' ? 'Notes Supplémentaires' : 'Shënime Shtesë'}</label>
-                                                            <textarea id="order_notes" name="Shënimet" rows="3" placeholder="${currentLanguage === 'en' ? 'Describe your specific requirements...' : currentLanguage === 'fr' ? 'Décrivez vos exigences spécifiques...' : 'Përshkruani kërkesat tuaja specifike...'}"></textarea>
+                                                            <label for="order_notes">${currentLanguage === 'en' ? 'Additional Notes' : currentLanguage === 'fr' ? 'Notes Supplémentaires' : currentLanguage === 'de' ? 'Zusätzliche Hinweise' : 'Shënime Shtesë'}</label>
+                                                            <textarea id="order_notes" name="Shënimet" rows="3" placeholder="${currentLanguage === 'en' ? 'Describe your specific requirements...' : currentLanguage === 'fr' ? 'Décrivez vos exigences spécifiques...' : currentLanguage === 'de' ? 'Beschreiben Sie Ihre spezifischen Anforderungen...' : 'Përshkruani kërkesat tuaja specifike...'}"></textarea>
                                                         </div>
-                                                        <button type="submit" class="door-order-btn">${currentLanguage === 'en' ? 'Submit Order' : currentLanguage === 'fr' ? 'Soumettre la Commande' : 'Dërgo Porosinë'}</button>
+                                                        <button type="submit" class="door-order-btn">${currentLanguage === 'en' ? 'Submit Order' : currentLanguage === 'fr' ? 'Soumettre la Commande' : currentLanguage === 'de' ? 'Bestellung absenden' : 'Dërgo Porosinë'}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -5642,14 +5923,14 @@
                                 })
                                 .then(response => {
                                     if (response.ok) {
-                                        alert(currentLanguage === 'sq' ? 'Faleminderit për porosinë tuaj! Do t\'ju kontaktojmë së shpejti për detajet.' : currentLanguage === 'fr' ? 'Merci pour votre commande ! Nous vous contacterons bientôt avec les détails.' : 'Thank you for your order! We will contact you soon with details.');
+                                        alert(currentLanguage === 'sq' ? 'Faleminderit për porosinë tuaj! Do t\'ju kontaktojmë së shpejti për detajet.' : currentLanguage === 'fr' ? 'Merci pour votre commande ! Nous vous contacterons bientôt avec les détails.' : currentLanguage === 'de' ? 'Vielen Dank für Ihre Bestellung! Wir werden Sie bald mit den Details kontaktieren.' : 'Thank you for your order! We will contact you soon with details.');
                                         closeDoorModal();
                                     } else {
                                         throw new Error('Network response was not ok');
                                     }
                                 })
                                 .catch(error => {
-                                    alert(currentLanguage === 'sq' ? 'Ka ndodhur një gabim. Ju lutem provoni përsëri më vonë.' : currentLanguage === 'fr' ? 'Une erreur s\'est produite. Veuillez réessayer plus tard.' : 'An error occurred. Please try again later.');
+                                    alert(currentLanguage === 'sq' ? 'Ka ndodhur një gabim. Ju lutem provoni përsëri më vonë.' : currentLanguage === 'fr' ? 'Une erreur s\'est produite. Veuillez réessayer plus tard.' : currentLanguage === 'de' ? 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.' : 'An error occurred. Please try again later.');
                                     console.error('Error:', error);
                                 });
                             });
@@ -5708,6 +5989,31 @@
                                     if (featuresTitle) featuresTitle.textContent = 'Caractéristiques';
                                     const orderTitle = doorModal.querySelector('.door-order h3');
                                     if (orderTitle) orderTitle.textContent = 'Passer la Commande';
+                                } else if (currentLanguage === 'de') {
+                                    const orderFormLabels = document.querySelectorAll('.door-order-form label');
+                                    const germanOrderLabels = ['Ihr Name *', 'E-Mail *', 'Telefon *', 'Adresse', 'Zusätzliche Hinweise'];
+                                    const germanOrderPlaceholder = 'Beschreiben Sie Ihre spezifischen Anforderungen...';
+                                    const germanOrderButton = 'Bestellung absenden';
+                                    orderFormLabels.forEach((label, index) => {
+                                        if (index < germanOrderLabels.length) {
+                                            label.textContent = germanOrderLabels[index];
+                                        }
+                                    });
+                                    const orderTextarea = document.querySelector('.door-order-form textarea[placeholder]');
+                                    if (orderTextarea) {
+                                        orderTextarea.placeholder = germanOrderPlaceholder;
+                                    }
+                                    const orderButton = document.querySelector('.door-order-btn');
+                                    if (orderButton) {
+                                        orderButton.textContent = germanOrderButton;
+                                    }
+                                    // Modal section titles
+                                    const descTitle = doorModal.querySelector('.door-description h3');
+                                    if (descTitle) descTitle.textContent = 'Beschreibung';
+                                    const featuresTitle = doorModal.querySelector('.door-features h3');
+                                    if (featuresTitle) featuresTitle.textContent = 'Eigenschaften';
+                                    const orderTitle = doorModal.querySelector('.door-order h3');
+                                    if (orderTitle) orderTitle.textContent = 'Bestellung aufgeben';
                                 } else {
                                     const orderFormLabels = document.querySelectorAll('.door-order-form label');
                                     const albanianOrderLabels = ['Emri Juaj *', 'Email *', 'Telefoni *', 'Adresa', 'Shënime Shtesë'];
@@ -5834,6 +6140,11 @@
                                 header: 'Assistant Virtuel',
                                 placeholder: 'Tapez votre question...',
                                 greeting: "Bonjour! Je suis l'assistant virtuel de MS Doors & Windows. Comment puis-je vous aider aujourd'hui? Vous pouvez me poser des questions sur nos services, collections, prix, ou tout autre chose!"
+                            },
+                            de: {
+                                header: 'Virtueller Assistent',
+                                placeholder: 'Geben Sie Ihre Frage ein...',
+                                greeting: "Hallo! Ich bin der virtuelle Assistent von MS Doors & Windows. Wie kann ich Ihnen heute helfen? Sie können mich zu unseren Dienstleistungen, Kollektionen, Preisen oder zu allem anderen fragen!"
                             }
                         };
 
@@ -5921,6 +6232,27 @@
                                 delivery: ['livraison', 'transport', 'délai', 'delai', 'quand arrive'],
                                 company: ['compagnie', 'entreprise', 'société', 'societe', 'à propos', 'a propos', 'qui êtes-vous', 'qui etes-vous', 'ms doors', 'ms windows'],
                                 website: ['site web', 'site', 'pages', 'sections', 'qu\'y a-t-il', 'informations']
+                            },
+                            de: {
+                                greetings: ['hallo', 'hi', 'hey', 'guten morgen', 'guten tag', 'guten abend', 'grüß gott', 'gruss gott', 'servus'],
+                                services: ['dienst', 'dienste', 'dienstleistung', 'dienstleistungen', 'welche dienste', 'bieten', 'anbieten', 'leistungen'],
+                                catalog: ['katalog', 'kollektion', 'kollektionen', 'türen', 'tueren', 'fenster', 'produkte', 'modelle'],
+                                prices: ['preis', 'preise', 'kosten', 'wie viel', 'wieviel', 'teuer', 'angebot', 'kostenvoranschlag'],
+                                phone: ['telefon', 'nummer', 'rufnummer', 'telefonnummer', 'anrufen', 'tel'],
+                                email: ['email', 'e-mail', 'mail', 'email adresse', 'e-mail-adresse'],
+                                address: ['adresse', 'standort', 'wo sind sie', 'wo befindet sich', 'ihre adresse', 'anschrift'],
+                                contact: ['kontakt', 'kontaktieren', 'wie kontaktieren', 'erreichen', 'in kontakt treten'],
+                                installation: ['installation', 'installieren', 'montage', 'einbau', 'wie installieren'],
+                                materials: ['material', 'materialien', 'aluminium', 'metall', 'glas', 'qualität', 'qualitaet'],
+                                doors: ['aurora', 'elegance', 'privata', 'polaris', 'verticalis', 'architectura', 'crystal', 'minimalis'],
+                                video: ['video', 'ausstellung', 'prozess', 'wie wird es gemacht', 'handwerk'],
+                                gallery: ['galerie', 'gallery', 'projekt', 'projekte', 'arbeiten', 'realisierungen'],
+                                developments: ['entwicklungen', 'statistiken', 'zahlen', 'erfolge', 'erfolg'],
+                                partners: ['partner', 'zusammenarbeit', 'kooperation'],
+                                hours: ['stunden', 'öffnungszeiten', 'offnungszeiten', 'wann', 'arbeitstage', 'arbeitszeiten'],
+                                delivery: ['lieferung', 'transport', 'lieferzeit', 'wann kommt'],
+                                company: ['firma', 'unternehmen', 'gesellschaft', 'über uns', 'ueber uns', 'wer sind sie', 'ms doors', 'ms windows'],
+                                website: ['webseite', 'website', 'seite', 'seiten', 'abschnitte', 'was gibt es', 'informationen']
                             },
                             responses: {
                                 sq: {
@@ -6045,6 +6377,47 @@
                                     website: "🌐 SECTIONS DU SITE:\n\nNotre site contient:\n\n1. 🏠 Accueil - Présentation de l'entreprise\n2. 🚪 Services - Services que nous offrons\n3. 📦 Catalogue - 8 collections exclusives\n4. 🎥 Exposition - Vidéo du processus de production\n5. 🖼️ Projets - Galerie de nos projets\n6. 📊 Développements - Statistiques et succès\n7. 🤝 Nos Partenaires - Nos partenaires\n8. 📞 Contact - Informations de contact et formulaire\n\nParcourez les sections pour en savoir plus!",
 
                                     default: "Merci pour votre question! 🤔\n\nJe peux vous aider avec:\n• Informations sur les services\n• Collections et modèles\n• Prix et offres\n• Numéro de téléphone: +377 44 877 682\n• Email: halitisebastian1@gmail.com\n• Adresse: Skifteraj, 61000, Kosovo\n• Installation et matériaux\n• Et tout autre chose sur notre entreprise\n\nSi vous n'avez pas trouvé la réponse, veuillez nous contacter directement ou consulter les sections pertinentes sur le site!"
+                                },
+                                de: {
+                                    greeting: "Hallo! 👋 Ich bin der virtuelle Assistent von MS Doors & Windows. Wie kann ich Ihnen heute helfen? Sie können mich zu unseren Dienstleistungen, Kollektionen, Preisen, Kontakt oder zu allen anderen Informationen fragen, die Sie benötigen!",
+
+                                    services: "🏢 UNSERE DIENSTLEISTUNGEN:\n\n• 🚪 Maßgefertigte Türen - Einzigartige Designs, die nach Ihren spezifischen Bedürfnissen und Stilvorlieben erstellt werden\n\n• 🪟 Fenstersysteme - Fortschrittliche Fensterlösungen mit hoher Energieeffizienz\n\n• 🏗️ Professionelle Installation - Perfekte Installation durch unsere Techniker mit jahrelanger Erfahrung\n\nWeitere Details finden Sie im Abschnitt 'Dienstleistungen' auf der Webseite!",
+
+                                    catalog: "📦 UNSERE EXKLUSIVEN KOLLEKTIONEN (8 Modelle):\n\n1. 🌅 Aurora - Moderne Türen aus Aluminium/Metall mit Seitenfenstern (Sidelight)\n2. ✨ Elegance - Elegante Türen mit voller Tafel und horizontalem Inox-Dekor für einen raffinierten Look\n3. 🔒 Privata - Türen mit Sichtstreifen, die Privatsphäre bieten und gleichzeitig Tageslicht erhalten\n4. ⭐ Polaris - Türen mit Polardesign, die Eleganz und Funktionalität vereinen\n5. 📐 Verticalis - Türen mit vertikalen Linien, die Ihrem Raum Höhe und Eleganz verleihen\n6. 🏛️ Architectura - Gewölbte Türen, die Ihrem Zuhause eine einzigartige architektonische Note verleihen\n7. 💎 Crystal - Türen mit Kristallansicht, die im Licht glänzen und Ihrem Raum Glanz verleihen\n8. 🎯 Minimalis - Türen mit schlichtem und elegantem Look, perfekt für den minimalistischen Stil\n\nAlle Details und Bilder finden Sie im Abschnitt 'Katalog'!",
+
+                                    prices: "💰 PREISE:\n\nDie Preise hängen ab von:\n• Dem gewählten Modell\n• Den Materialien (Aluminium, Metall, Glas)\n• Größe und Abmessungen\n• Zusätzlichen Funktionen\n\nFür ein individuelles und detailliertes Angebot:\n• Kontaktieren Sie uns telefonisch: +377 44 877 682\n• Oder füllen Sie das Kontaktformular im Abschnitt 'Kontakt' aus\n\nWir antworten schnell mit einem individuellen Angebot für Ihr Projekt!",
+
+                                    phone: "📞 TELEFONNUMMER:\n\n+377 44 877 682\n\nSie können uns anrufen für:\n• Kostenlose Beratungen\n• Modellinformationen\n• Individuelle Angebote\n• Bestellungen und Koordination\n• Fragen jeder Art\n\nWir stehen Ihnen gerne zur Verfügung!",
+
+                                    email: "✉️ E-MAIL-ADRESSE:\n\nhalitisebastian1@gmail.com\n\nSie können uns eine E-Mail senden für:\n• Angebotsanfragen\n• Produktinformationen\n• Bestellungen und Beratungen\n• Zusammenarbeit\n\nWir antworten so schnell wie möglich!",
+
+                                    address: "📍 ADRESSE:\n\nSkifteraj, 61000, Kosovo\n\nSie können uns an unserem Standort besuchen oder die genaue Karte im Abschnitt 'Kontakt' der Webseite ansehen. Die Karte zeigt unseren genauen Standort auf Google Maps.",
+
+                                    contact: "📞 KONTAKTINFORMATIONEN:\n\n• 📞 Telefon: +377 44 877 682\n• ✉️ E-Mail: halitisebastian1@gmail.com\n• 📍 Adresse: Skifteraj, 61000, Kosovo\n\nSie können uns jederzeit kontaktieren für:\n• Kostenlose Beratungen\n• Produktinformationen\n• Individuelle Angebote\n• Bestellungen und Installation\n• Fragen jeder Art\n\nOder füllen Sie das Kontaktformular im Abschnitt 'Kontakt' der Webseite aus!",
+
+                                    installation: "🔧 INSTALLATION:\n\nWir bieten professionelle Installation durch unsere Techniker mit jahrelanger Erfahrung.\n\n• Der Installationsprozess ist sicher und schnell\n• Unsere Techniker sind qualifiziert und erfahren\n• Nach der Bestellung koordinieren wir den für Sie passenden Installationszeitpunkt\n• Wir gewährleisten Qualität und Garantie für unsere Arbeit\n\nFür weitere Informationen kontaktieren Sie uns unter +377 44 877 682",
+
+                                    materials: "🔨 MATERIALIEN:\n\nWir verwenden ausschließlich hochwertige Premium-Materialien:\n\n• Aluminium und Metall für Rahmen - Robust und langlebig\n• Hochwertiges Glas - Klarheit und Langlebigkeit\n• Wetterbeständige Materialien - Für langfristige Haltbarkeit\n• Moderne Technologie für Wärme- und Schalldämmung - Energieeffizienz\n\nAlle Materialien werden sorgfältig ausgewählt, um maximale Qualität zu gewährleisten!",
+
+                                    doorInfo: "🚪 KOLLEKTION {door}:\n\nDie Kollektion {door} ist eines unserer beliebtesten und elegantesten Modelle.\n\nFür weitere Details:\n• Klicken Sie auf das Türbild im Abschnitt 'Katalog'\n• Vollständige Eigenschaften ansehen\n• Materialinformationen\n• Sie können direkt bestellen\n\nOder kontaktieren Sie uns unter +377 44 877 682 für Beratungen!",
+
+                                    video: "🎥 UNSER FERTIGUNGSPROZESS:\n\nIm Video-Abschnitt können Sie den detaillierten Prozess hinter unseren Premium-Architekturelementen sehen.\n\n• Handwerkskunst und Liebe zum Detail\n• Moderne Produktionstechniken\n• Qualitätskontrolle in jeder Phase\n• Vom Rohmaterial zum fertigen Produkt\n\nBesuchen Sie den Video-Abschnitt auf der Webseite, um mehr zu erfahren!",
+
+                                    gallery: "🖼️ UNSERE PROJEKTE:\n\nIm Galerie-Abschnitt finden Sie eine Auswahl unserer realisierten Projekte.\n\n• Verschiedene Stile und Designs\n• Kommerzielle und Wohnprojekte\n• Vorher-Nachher-Vergleiche\n• Verschiedene Standorte\n\nBesuchen Sie den Galerie-Abschnitt, um unsere Arbeiten zu sehen!",
+
+                                    developments: "📊 UNSERE ENTWICKLUNGEN:\n\n• Abgeschlossene Projekte: Erfolgreiche Projekte im Kosovo\n• Exportländer: Export in 25 verschiedene Länder weltweit\n• Neue Fabrik: Fabrik für erweiterte Produktion gebaut\n• Mitarbeiter: Erweitertes Team mit qualifizierten Spezialisten\n• Exporte: Über 100.000 Exporte weltweit\n\nWir wachsen und expandieren ständig!",
+
+                                    partners: "🤝 UNSERE PARTNER:\n\nWir arbeiten mit führenden Unternehmen und Marken in der Branche zusammen.\n\n• Qualitätslieferanten\n• Zuverlässige Geschäftspartner\n• Branchenführer\n• Langfristige Kooperationen\n\nBesuchen Sie den Partner-Abschnitt, um unsere Partner zu sehen!",
+
+                                    hours: "🕐 ARBEITSZEITEN:\n\nUnsere Öffnungszeiten:\n• Montag - Freitag: 09:00 - 18:00\n• Samstag: 09:00 - 14:00\n• Sonntag: Geschlossen\n\nSie können uns während der Arbeitszeiten anrufen oder eine E-Mail senden, und wir antworten so schnell wie möglich!",
+
+                                    delivery: "🚚 LIEFERUNG UND TRANSPORT:\n\nNach der Bestellung:\n• Wir koordinieren Transport und Installation\n• Die Lieferzeit hängt vom Modell und der Größe ab\n• Wir informieren Sie über die genaue Zeit nach der Bestellbestätigung\n• Wir bieten professionellen Transport und Installation\n\nFür weitere Details kontaktieren Sie uns unter +377 44 877 682",
+
+                                    company: "🏢 MS DOORS & WINDOWS:\n\nWir sind ein Unternehmen, das auf die Herstellung und Installation von Premium-Türen und Fenstern spezialisiert ist.\n\n• Mehr als 15 Jahre Erfahrung\n• 500+ abgeschlossene Projekte\n• 1000+ zufriedene Kunden\n• Professionelles und qualifiziertes Team\n• Premium-Materialien und moderne Technologie\n\nUnsere Mission ist es, Premium-Architekturlösungen für Ihre Traumhäuser zu bieten!",
+
+                                    website: "🌐 WEBSITEN-ABSCHNITTE:\n\nUnsere Webseite enthält:\n\n1. 🏠 Startseite - Unternehmensvorstellung\n2. 🚪 Dienstleistungen - Unsere angebotenen Dienste\n3. 📦 Katalog - 8 exklusive Kollektionen\n4. 🎥 Ausstellung - Video des Produktionsprozesses\n5. 🖼️ Projekte - Galerie unserer Projekte\n6. 📊 Entwicklungen - Statistiken und Erfolge\n7. 🤝 Unsere Partner - Unsere Partner\n8. 📞 Kontakt - Kontaktinformationen und Formular\n\nDurchsuchen Sie die Abschnitte, um mehr zu erfahren!",
+
+                                    default: "Danke für Ihre Frage! 🤔\n\nIch kann Ihnen helfen mit:\n• Dienstleistungsinformationen\n• Kollektionen und Modelle\n• Preise und Angebote\n• Telefonnummer: +377 44 877 682\n• E-Mail: halitisebastian1@gmail.com\n• Adresse: Skifteraj, 61000, Kosovo\n• Installation und Materialien\n• Und alles andere über unser Unternehmen\n\nWenn Sie keine Antwort gefunden haben, kontaktieren Sie uns bitte direkt oder sehen Sie die entsprechenden Abschnitte auf der Webseite!"
                                 }
                             }
                         };
@@ -6053,8 +6426,8 @@
                         function getBotResponse(userMessage) {
                             const message = userMessage.toLowerCase().trim();
                             const lang = (typeof currentLanguage !== 'undefined' && chatbotKnowledge[currentLanguage]) ? currentLanguage : 'sq';
-                            const keywords = chatbotKnowledge[lang];
-                            const responses = chatbotKnowledge.responses[lang];
+                            const keywords = chatbotKnowledge[lang] || chatbotKnowledge.sq;
+                            const responses = chatbotKnowledge.responses[lang] || chatbotKnowledge.responses.en || chatbotKnowledge.responses.sq;
 
                             // Check for greetings
                             if (keywords.greetings.some(g => message.includes(g))) {
